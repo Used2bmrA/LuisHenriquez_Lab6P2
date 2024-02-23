@@ -3,6 +3,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.MutableTreeNode;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -59,10 +60,13 @@ public class Principal extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        list_jugadores = new javax.swing.JList<>();
+        jlist_jugadores = new javax.swing.JList<>();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tree_equipos = new javax.swing.JTree();
+        jtree_equipos = new javax.swing.JTree();
         bt_transferirJugador = new javax.swing.JButton();
+        pp_menu = new javax.swing.JPopupMenu();
+        jmi_modificar = new javax.swing.JMenuItem();
+        jmi_eliminar = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jToolBar1 = new javax.swing.JToolBar();
@@ -207,14 +211,19 @@ public class Principal extends javax.swing.JFrame {
         jLabel13.setText("Equipos");
         jPanel4.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 140, -1, -1));
 
-        list_jugadores.setModel(new DefaultListModel());
-        jScrollPane1.setViewportView(list_jugadores);
+        jlist_jugadores.setModel(new DefaultListModel());
+        jlist_jugadores.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jlist_jugadoresMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jlist_jugadores);
 
         jPanel4.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 190, 120, 160));
 
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Paises");
-        tree_equipos.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
-        jScrollPane2.setViewportView(tree_equipos);
+        jtree_equipos.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        jScrollPane2.setViewportView(jtree_equipos);
 
         jPanel4.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 190, 140, 170));
 
@@ -241,6 +250,23 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 431, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
+
+        pp_menu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pp_menuMouseClicked(evt);
+            }
+        });
+
+        jmi_modificar.setText("Modificar");
+        jmi_modificar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jmi_modificarMouseClicked(evt);
+            }
+        });
+        pp_menu.add(jmi_modificar);
+
+        jmi_eliminar.setText("Eliminar");
+        pp_menu.add(jmi_eliminar);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -422,7 +448,7 @@ public class Principal extends javax.swing.JFrame {
             tf_estadio.setText("");
             Equipo nuevoEquipo = new Equipo(pais, nombre, ciudad, estadio);
             
-            DefaultTreeModel modelo = (DefaultTreeModel) tree_equipos.getModel();
+            DefaultTreeModel modelo = (DefaultTreeModel) jtree_equipos.getModel();
             DefaultMutableTreeNode raiz = (DefaultMutableTreeNode) modelo.getRoot();
             DefaultMutableTreeNode equipo  = new DefaultMutableTreeNode (nuevoEquipo);
 
@@ -438,6 +464,7 @@ public class Principal extends javax.swing.JFrame {
                 DefaultMutableTreeNode equipo1 = new DefaultMutableTreeNode(nuevoEquipo);
                 DefaultMutableTreeNode pais1 = new DefaultMutableTreeNode(nuevoEquipo.getPais());
                 
+                equipo1.add(new DefaultMutableTreeNode(nuevoEquipo.getNombre()));
                 pais1.add(equipo1);
                 raiz.add(pais1);
             }
@@ -458,9 +485,9 @@ public class Principal extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(pn_crearJugador, "No puedes dejar el nombre vacio");
         }else{
             
-            DefaultListModel modelo =(DefaultListModel) list_jugadores.getModel();
+            DefaultListModel modelo =(DefaultListModel) jlist_jugadores.getModel();
             modelo.addElement(new Jugador(nombre, posicion, edad));
-            list_jugadores.setModel(modelo);
+            jlist_jugadores.setModel(modelo);
 
             tf_nombreJugador.setText("");
             JOptionPane.showMessageDialog(pn_crearJugador, "Jugador creado exitosamente");
@@ -469,8 +496,34 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_bt_agregarJugadorActionPerformed
 
     private void bt_transferirJugadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_transferirJugadorActionPerformed
+        DefaultTreeModel treem = (DefaultTreeModel) jtree_equipos.getModel();
+        DefaultListModel listm = (DefaultListModel) jlist_jugadores.getModel();
+        MutableTreeNode raiz = (DefaultMutableTreeNode) treem.getRoot();
+        
+        
         
     }//GEN-LAST:event_bt_transferirJugadorActionPerformed
+
+    private void jlist_jugadoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlist_jugadoresMouseClicked
+        if (evt.getButton() == 3) {
+            pp_menu.show(pn_transferencias, evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_jlist_jugadoresMouseClicked
+
+    private void pp_menuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pp_menuMouseClicked
+
+        if (evt.getButton() == 3) {
+            pp_menu.show(evt.getComponent(),
+                    evt.getX(), evt.getY());
+        }
+
+    }//GEN-LAST:event_pp_menuMouseClicked
+
+    private void jmi_modificarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jmi_modificarMouseClicked
+        DefaultListModel modeloLISTA = (DefaultListModel) jlist_jugadores.getModel();
+            ((Persona) modeloLISTA.get(jl_personas.getSelectedIndex()) ).setNombre(JOptionPane.showInputDialog("nombre"));
+            jlist_jugadores.setModel(modeloLISTA);
+    }//GEN-LAST:event_jmi_modificarMouseClicked
 
     /**
      * @param args the command line arguments
@@ -537,21 +590,24 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JList<String> jlist_jugadores;
     private javax.swing.JMenu jm_ayuda;
     private javax.swing.JMenuItem jmi_crearEquipo;
     private javax.swing.JMenuItem jmi_crearJugador;
+    private javax.swing.JMenuItem jmi_eliminar;
+    private javax.swing.JMenuItem jmi_modificar;
     private javax.swing.JMenu jmi_transferencia;
     private javax.swing.JMenuItem jmi_transferencias;
-    private javax.swing.JList<String> list_jugadores;
+    private javax.swing.JTree jtree_equipos;
     private javax.swing.JFrame pn_crearEquipo;
     private javax.swing.JFrame pn_crearJugador;
     private javax.swing.JFrame pn_transferencias;
+    private javax.swing.JPopupMenu pp_menu;
     private javax.swing.JSpinner sp_edad;
     private javax.swing.JTextField tf_ciudad;
     private javax.swing.JTextField tf_estadio;
     private javax.swing.JTextField tf_nombreEquipo;
     private javax.swing.JTextField tf_nombreJugador;
     private javax.swing.JTextField tf_pais;
-    private javax.swing.JTree tree_equipos;
     // End of variables declaration//GEN-END:variables
 }
