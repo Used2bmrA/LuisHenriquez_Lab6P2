@@ -521,7 +521,8 @@ public class Principal extends javax.swing.JFrame {
 
     private void jmi_modificarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jmi_modificarMouseClicked
         DefaultListModel modeloLISTA = (DefaultListModel) jlist_jugadores.getModel();
-            ((Persona) modeloLISTA.get(jl_personas.getSelectedIndex()) ).setNombre(JOptionPane.showInputDialog("nombre"));
+            ((Jugador) modeloLISTA.get(jlist_jugadores.getSelectedIndex()) ).setNombre(JOptionPane.showInputDialog("Nombre"));
+            ((Jugador) modeloLISTA.get(jlist_jugadores.getSelectedIndex()) ).setEdad(((Integer) JOptionPane.showInputDialog("Edad")).);
             jlist_jugadores.setModel(modeloLISTA);
     }//GEN-LAST:event_jmi_modificarMouseClicked
 
