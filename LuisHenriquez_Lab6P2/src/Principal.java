@@ -513,16 +513,16 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_bt_agregarJugadorActionPerformed
 
     private void bt_transferirJugadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_transferirJugadorActionPerformed
-        if (jlist_jugadores.getSelectedIndex() >= 0) {
+        if (jlist_jugadores.getSelectedIndex() >= 0 && jtree_equipos.getSelectionCount() != 0) {
             DefaultTreeModel modeloARBOL = (DefaultTreeModel) jtree_equipos.getModel();
             DefaultMutableTreeNode raiz = (DefaultMutableTreeNode) modeloARBOL.getRoot();
-
             DefaultListModel modeloLISTA = (DefaultListModel) jlist_jugadores.getModel();
+            
             
             
             modeloARBOL.reload();
         } else {
-            JOptionPane.showMessageDialog(pn_transferencias,"Seleccione un jugador");
+            JOptionPane.showMessageDialog(pn_transferencias,"Seleccione un jugador y un equipo");
         }
     }//GEN-LAST:event_bt_transferirJugadorActionPerformed
 
