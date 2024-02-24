@@ -389,7 +389,7 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jm_ayudaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jm_ayudaMouseClicked
-        JOptionPane.showMessageDialog(this, "Your God can't help you here.");
+        JOptionPane.showMessageDialog(this, "Instalé este botón para que me ayudara, pero, como gran parte de mi programa, no funcionó");
     }//GEN-LAST:event_jm_ayudaMouseClicked
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
@@ -451,6 +451,7 @@ public class Principal extends javax.swing.JFrame {
             DefaultTreeModel modelo = (DefaultTreeModel) jtree_equipos.getModel();
             DefaultMutableTreeNode raiz = (DefaultMutableTreeNode) modelo.getRoot();
             DefaultMutableTreeNode equipo  = new DefaultMutableTreeNode (nuevoEquipo);
+            DefaultMutableTreeNode pais1  = new DefaultMutableTreeNode (nuevoEquipo.getPais());
 
             int centinela = -1;
             for (int i = 0; i < raiz.getChildCount(); i++) {
@@ -461,11 +462,7 @@ public class Principal extends javax.swing.JFrame {
             }
             
             if (centinela == -1) {
-                DefaultMutableTreeNode equipo1 = new DefaultMutableTreeNode(nuevoEquipo);
-                DefaultMutableTreeNode pais1 = new DefaultMutableTreeNode(nuevoEquipo.getPais());
-                
-                equipo1.add(new DefaultMutableTreeNode(nuevoEquipo.getNombre()));
-                pais1.add(equipo1);
+                pais1.add(equipo);
                 raiz.add(pais1);
             }
             
@@ -521,8 +518,10 @@ public class Principal extends javax.swing.JFrame {
 
     private void jmi_modificarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jmi_modificarMouseClicked
         DefaultListModel modeloLISTA = (DefaultListModel) jlist_jugadores.getModel();
-            ((Jugador) modeloLISTA.get(jlist_jugadores.getSelectedIndex()) ).setNombre(JOptionPane.showInputDialog("Nombre"));
-            ((Jugador) modeloLISTA.get(jlist_jugadores.getSelectedIndex()) ).setEdad(((Integer) JOptionPane.showInputDialog("Edad")).);
+            ((Jugador) modeloLISTA.get(jlist_jugadores.getSelectedIndex()) ).setNombre(JOptionPane.showInputDialog("Ingrese el nombre"));
+            String edadString = JOptionPane.showInputDialog("Ingrese la edad");
+            int edad = Integer.parseInt(edadString);
+            ((Jugador) modeloLISTA.get(jlist_jugadores.getSelectedIndex())).setEdad(edad);
             jlist_jugadores.setModel(modeloLISTA);
     }//GEN-LAST:event_jmi_modificarMouseClicked
 
