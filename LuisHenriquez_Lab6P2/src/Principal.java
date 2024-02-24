@@ -513,12 +513,17 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_bt_agregarJugadorActionPerformed
 
     private void bt_transferirJugadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_transferirJugadorActionPerformed
-        DefaultTreeModel treem = (DefaultTreeModel) jtree_equipos.getModel();
-        DefaultListModel listm = (DefaultListModel) jlist_jugadores.getModel();
-        MutableTreeNode raiz = (DefaultMutableTreeNode) treem.getRoot();
-        
-        
-        
+        if (jlist_jugadores.getSelectedIndex() >= 0) {
+            DefaultTreeModel modeloARBOL = (DefaultTreeModel) jtree_equipos.getModel();
+            DefaultMutableTreeNode raiz = (DefaultMutableTreeNode) modeloARBOL.getRoot();
+
+            DefaultListModel modeloLISTA = (DefaultListModel) jlist_jugadores.getModel();
+            
+            
+            modeloARBOL.reload();
+        } else {
+            JOptionPane.showMessageDialog(pn_transferencias,"Seleccione un jugador");
+        }
     }//GEN-LAST:event_bt_transferirJugadorActionPerformed
 
     private void jlist_jugadoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlist_jugadoresMouseClicked
@@ -530,7 +535,6 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jlist_jugadoresMouseClicked
 
     private void pp_jugadoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pp_jugadoresMouseClicked
-
         if (evt.getButton() == 3) {
             pp_jugadores.show(evt.getComponent(),evt.getX(), evt.getY());
         }
@@ -538,12 +542,12 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_pp_jugadoresMouseClicked
 
     private void jmi_modificarJugadorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jmi_modificarJugadorMouseClicked
-        DefaultListModel modeloLISTA = (DefaultListModel) jlist_jugadores.getModel();
+        if (jlist_jugadores.getSelectedIndex() >= 0) {
+            DefaultListModel modeloLISTA = (DefaultListModel) jlist_jugadores.getModel();
             ((Jugador) modeloLISTA.get(jlist_jugadores.getSelectedIndex()) ).setNombre(JOptionPane.showInputDialog("Ingrese el nombre"));
-            String edadString = JOptionPane.showInputDialog("Ingrese la edad");
-            int edad = Integer.parseInt(edadString);
-            ((Jugador) modeloLISTA.get(jlist_jugadores.getSelectedIndex())).setEdad(edad);
+            ((Jugador) modeloLISTA.get(jlist_jugadores.getSelectedIndex()) ).setEdad((Integer.parseInt(JOptionPane.showInputDialog("Ingrese la edad"))));
             jlist_jugadores.setModel(modeloLISTA);
+        }
     }//GEN-LAST:event_jmi_modificarJugadorMouseClicked
 
     private void jtree_equiposMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtree_equiposMouseClicked
@@ -574,11 +578,10 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jmi_eliminarEquipoActionPerformed
 
     private void jmi_eliminarJugadorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jmi_eliminarJugadorMouseClicked
-        if (jl_personas.getSelectedIndex() >= 0) {
-            if (evt.isMetaDown()) {
-                popup_modificar.show(evt.getComponent(),
-                        evt.getX(), evt.getY());
-            }
+         if (jlist_jugadores.getSelectedIndex() >= 0) {
+            DefaultListModel modeloLISTA = (DefaultListModel) jlist_jugadores.getModel();
+            modeloLISTA.remove(jlist_jugadores.getSelectedIndex());
+            jlist_jugadores.setModel(modeloLISTA);
         }
     }//GEN-LAST:event_jmi_eliminarJugadorMouseClicked
 
