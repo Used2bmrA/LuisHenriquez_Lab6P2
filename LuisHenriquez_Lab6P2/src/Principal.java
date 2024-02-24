@@ -64,9 +64,11 @@ public class Principal extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jtree_equipos = new javax.swing.JTree();
         bt_transferirJugador = new javax.swing.JButton();
-        pp_menu = new javax.swing.JPopupMenu();
-        jmi_modificar = new javax.swing.JMenuItem();
-        jmi_eliminar = new javax.swing.JMenuItem();
+        pp_jugadores = new javax.swing.JPopupMenu();
+        jmi_modificarJugador = new javax.swing.JMenuItem();
+        jmi_eliminarJugador = new javax.swing.JMenuItem();
+        pp_equipos = new javax.swing.JPopupMenu();
+        jmi_eliminarEquipo = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jToolBar1 = new javax.swing.JToolBar();
@@ -223,6 +225,11 @@ public class Principal extends javax.swing.JFrame {
 
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Paises");
         jtree_equipos.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        jtree_equipos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtree_equiposMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(jtree_equipos);
 
         jPanel4.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 190, 140, 170));
@@ -251,22 +258,35 @@ public class Principal extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        pp_menu.addMouseListener(new java.awt.event.MouseAdapter() {
+        pp_jugadores.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                pp_menuMouseClicked(evt);
+                pp_jugadoresMouseClicked(evt);
             }
         });
 
-        jmi_modificar.setText("Modificar");
-        jmi_modificar.addMouseListener(new java.awt.event.MouseAdapter() {
+        jmi_modificarJugador.setText("Modificar");
+        jmi_modificarJugador.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jmi_modificarMouseClicked(evt);
+                jmi_modificarJugadorMouseClicked(evt);
             }
         });
-        pp_menu.add(jmi_modificar);
+        pp_jugadores.add(jmi_modificarJugador);
 
-        jmi_eliminar.setText("Eliminar");
-        pp_menu.add(jmi_eliminar);
+        jmi_eliminarJugador.setText("Eliminar");
+        jmi_eliminarJugador.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jmi_eliminarJugadorMouseClicked(evt);
+            }
+        });
+        pp_jugadores.add(jmi_eliminarJugador);
+
+        jmi_eliminarEquipo.setText("Eliminar");
+        jmi_eliminarEquipo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmi_eliminarEquipoActionPerformed(evt);
+            }
+        });
+        pp_equipos.add(jmi_eliminarEquipo);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -502,28 +522,65 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_bt_transferirJugadorActionPerformed
 
     private void jlist_jugadoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlist_jugadoresMouseClicked
-        if (evt.getButton() == 3) {
-            pp_menu.show(pn_transferencias, evt.getX(), evt.getY());
+        if (jlist_jugadores.getSelectedIndex() >= 0) {
+            if (evt.getButton() == 3) {
+                pp_jugadores.show(evt.getComponent(),evt.getX(), evt.getY());
+            }
         }
     }//GEN-LAST:event_jlist_jugadoresMouseClicked
 
-    private void pp_menuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pp_menuMouseClicked
+    private void pp_jugadoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pp_jugadoresMouseClicked
 
         if (evt.getButton() == 3) {
-            pp_menu.show(evt.getComponent(),
-                    evt.getX(), evt.getY());
+            pp_jugadores.show(evt.getComponent(),evt.getX(), evt.getY());
         }
 
-    }//GEN-LAST:event_pp_menuMouseClicked
+    }//GEN-LAST:event_pp_jugadoresMouseClicked
 
-    private void jmi_modificarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jmi_modificarMouseClicked
+    private void jmi_modificarJugadorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jmi_modificarJugadorMouseClicked
         DefaultListModel modeloLISTA = (DefaultListModel) jlist_jugadores.getModel();
             ((Jugador) modeloLISTA.get(jlist_jugadores.getSelectedIndex()) ).setNombre(JOptionPane.showInputDialog("Ingrese el nombre"));
             String edadString = JOptionPane.showInputDialog("Ingrese la edad");
             int edad = Integer.parseInt(edadString);
             ((Jugador) modeloLISTA.get(jlist_jugadores.getSelectedIndex())).setEdad(edad);
             jlist_jugadores.setModel(modeloLISTA);
-    }//GEN-LAST:event_jmi_modificarMouseClicked
+    }//GEN-LAST:event_jmi_modificarJugadorMouseClicked
+
+    private void jtree_equiposMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtree_equiposMouseClicked
+        if (evt.getButton() == 3) {
+            int row = jtree_equipos.getClosestRowForLocation(evt.getX(), evt.getY());
+            jtree_equipos.setSelectionRow(row);
+            Object v1 = jtree_equipos.getSelectionPath().getLastPathComponent();
+            nodo_seleccionado = (DefaultMutableTreeNode) v1;
+            
+            if (nodo_seleccionado.getUserObject() instanceof Equipo) {
+                equipo_seleccionado = (Equipo) nodo_seleccionado.getUserObject();
+                 pp_equipos.show(evt.getComponent(), evt.getX(), evt.getY());
+            }
+            
+           
+        }
+    }//GEN-LAST:event_jtree_equiposMouseClicked
+
+    private void jmi_eliminarEquipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmi_eliminarEquipoActionPerformed
+        int response = JOptionPane.showConfirmDialog(pn_transferencias,"Seguro de Eliminar?",
+                "Confirm",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+        
+        if (response == JOptionPane.OK_OPTION) {
+            DefaultTreeModel m = (DefaultTreeModel) jtree_equipos.getModel();
+            m.removeNodeFromParent(nodo_seleccionado);
+            m.reload();
+        }
+    }//GEN-LAST:event_jmi_eliminarEquipoActionPerformed
+
+    private void jmi_eliminarJugadorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jmi_eliminarJugadorMouseClicked
+        if (jl_personas.getSelectedIndex() >= 0) {
+            if (evt.isMetaDown()) {
+                popup_modificar.show(evt.getComponent(),
+                        evt.getX(), evt.getY());
+            }
+        }
+    }//GEN-LAST:event_jmi_eliminarJugadorMouseClicked
 
     /**
      * @param args the command line arguments
@@ -594,15 +651,17 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jm_ayuda;
     private javax.swing.JMenuItem jmi_crearEquipo;
     private javax.swing.JMenuItem jmi_crearJugador;
-    private javax.swing.JMenuItem jmi_eliminar;
-    private javax.swing.JMenuItem jmi_modificar;
+    private javax.swing.JMenuItem jmi_eliminarEquipo;
+    private javax.swing.JMenuItem jmi_eliminarJugador;
+    private javax.swing.JMenuItem jmi_modificarJugador;
     private javax.swing.JMenu jmi_transferencia;
     private javax.swing.JMenuItem jmi_transferencias;
     private javax.swing.JTree jtree_equipos;
     private javax.swing.JFrame pn_crearEquipo;
     private javax.swing.JFrame pn_crearJugador;
     private javax.swing.JFrame pn_transferencias;
-    private javax.swing.JPopupMenu pp_menu;
+    private javax.swing.JPopupMenu pp_equipos;
+    private javax.swing.JPopupMenu pp_jugadores;
     private javax.swing.JSpinner sp_edad;
     private javax.swing.JTextField tf_ciudad;
     private javax.swing.JTextField tf_estadio;
@@ -610,4 +669,9 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JTextField tf_nombreJugador;
     private javax.swing.JTextField tf_pais;
     // End of variables declaration//GEN-END:variables
+
+        DefaultMutableTreeNode nodo_seleccionado;
+        Equipo equipo_seleccionado;
+
+
 }
